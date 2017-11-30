@@ -1,0 +1,19 @@
+rem echo off
+git init
+git add Anim3/App.xaml
+git add Anim3/App.xaml.cs
+git add Anim3/ViewModel.cs
+git add Anim3/Converters/ConverterBase.cs
+git add Anim3/Converters/MyValueConverter.cs
+git add Anim3/App.config
+git add Anim3/MainWindow.xaml
+git add Anim3/MainWindow.xaml.cs
+git add Anim3/Properties/AssemblyInfo.cs
+git add Anim3/app.config
+git add Anim3/Properties/Settings.settings
+git add Anim3/Properties/Resources.Designer.cs
+git add Anim3/Properties/Resources.resx
+git add Anim3/Properties/Settings.Designer.cs
+git add Anim3/Anim3.csproj
+git add Anim3.sln
+git add .gitignore
