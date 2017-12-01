@@ -7,6 +7,7 @@ namespace Anim3
 {
     public class ViewModel
     {
+        public string V { get; set; } = "hello";
         public Thickness MyMargin { get; set; } = new Thickness(50, 50, 50, 50);
     }
 }

@@ -9,20 +9,27 @@
 <Window.DataContext>
     <local:ViewModel/>
 </Window.DataContext>
-    <Grid>
-        <StackPanel x:Name="panel" Width="100" Background="Beige">
-            <StackPanel.RenderTransform>
-                <TranslateTransform x:Name="translator"/>
-            </StackPanel.RenderTransform>
-            <Canvas x:Name="canvas"  Height="50" Width="{Binding ActualWidth, ElementName=panel}">
-                <TextBlock Text="Hello, World!" FontSize="20" VerticalAlignment="Center" Canvas.Left="0"/>
-                <TextBlock Text="Hello, World!" FontSize="20" VerticalAlignment="Center" Canvas.Left="{Binding Width, ElementName=canvas}"/>
+    <Grid Margin="0,100,0,0">
+        <StackPanel x:Name="panel" Width="100" Background="Beige" ClipToBounds="True">
+            <Canvas x:Name="canvas" Height="50" Width="{Binding ActualWidth, ElementName=panel}">
+                <TextBlock x:Name="tb1" Padding="0,0,10,0"  Text="Hello, World!" FontSize="20" VerticalAlignment="Center" Canvas.Left="0" />
+                <TextBlock Text="{Binding ElementName=tb1, Path=Text}" FontSize="20"
+                           VerticalAlignment="Center" Canvas.Left="{Binding ActualWidth, ElementName=tb1}" />
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="translator"/>
+                </Canvas.RenderTransform>
             </Canvas>
             <StackPanel.Triggers>
                 <EventTrigger RoutedEvent="Loaded">
                     <BeginStoryboard>
                         <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="X" Storyboard.TargetName="translator" From="0" To="100"/>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="X"
+                                Storyboard.TargetName="translator"
+                                From="0"
+                                To="{Binding ElementName=tb1, Path=ActualWidth, Converter={local:MultiplyByMinusOne}}"
+                                Duration="00:00:10"
+                                RepeatBehavior="Forever"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
