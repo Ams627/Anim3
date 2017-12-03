@@ -9,8 +9,13 @@
 <Window.DataContext>
     <local:ViewModel/>
 </Window.DataContext>
-    <Grid Margin="0,100,0,0">
-        <StackPanel x:Name="panel" Width="100" Background="Beige" ClipToBounds="True">
+    <Grid Margin="0,100,0.4,-0.2">
+        <StackPanel>
+            <local:TextMarquee Content="Hello, said the man" Width="160" Height="150" Background="Azure" FontSize="20"/>
+            <Rectangle Height="200" Width="200" Fill="Green"/>
+        </StackPanel>
+
+        <!--<Grid x:Name="panel" Width="100" Background="Beige" ClipToBounds="True" Margin="0,100,0,0">
             <Canvas x:Name="canvas" Height="50" Width="{Binding ActualWidth, ElementName=panel}">
                 <TextBlock x:Name="tb1" Padding="0,0,10,0"  Text="Hello, World!" FontSize="20" VerticalAlignment="Center" Canvas.Left="0" />
                 <TextBlock Text="{Binding ElementName=tb1, Path=Text}" FontSize="20"
@@ -19,7 +24,7 @@
                     <TranslateTransform x:Name="translator"/>
                 </Canvas.RenderTransform>
             </Canvas>
-            <StackPanel.Triggers>
+            <Grid.Triggers>
                 <EventTrigger RoutedEvent="Loaded">
                     <BeginStoryboard>
                         <Storyboard>
@@ -33,7 +38,7 @@
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
-            </StackPanel.Triggers>
-        </StackPanel>
+            </Grid.Triggers>
+        </Grid>-->
     </Grid>
 </Window>
