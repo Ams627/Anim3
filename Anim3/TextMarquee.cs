@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -17,6 +18,21 @@ namespace Anim3
 {
     public class TextMarquee : Label
     {
+        public enum AnimationRunType
+        {
+            /// <summary>
+            /// Run the animation:
+            /// </summary>
+            Run,
+            /// <summary>
+            /// Don't run the animation@
+            /// </summary>
+            DontRun,
+            /// <summary>
+            /// Run the animation if the actual width of the text is less than the full required width:
+            /// </summary>
+            Auto
+        };
         static TextMarquee()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TextMarquee), new FrameworkPropertyMetadata(typeof(TextMarquee)));
@@ -60,12 +76,37 @@ namespace Anim3
 
         private void TextMarquee_Loaded(object sender, RoutedEventArgs e)
         {
-            var l = new Label() { Content = Content };
-            l.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            Size s = l.DesiredSize;
-            var l1 = l.ActualWidth;
-            IsAnimationEnabled = s.Width > Width;
-            SendAnimationEvent(IsAnimationEnabled);
+            CheckAnimationRuntype();
+        }
+
+        public void CheckAnimationRuntype(bool changed = false)
+        {
+            if (RunType == AnimationRunType.Run)
+            {
+                SendAnimationEvent(true);
+            }
+            else if (RunType == AnimationRunType.Auto)
+            {
+                var textblock = new TextBlock
+                {
+                    Text = Content as string,
+                    FontSize = FontSize,
+                    FontFamily = FontFamily,
+                    FontWeight = FontWeight,
+                    FontStyle = FontStyle
+                };
+
+                textblock.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+                textblock.Arrange(new Rect(textblock.DesiredSize));
+                if (textblock.ActualWidth > ActualWidth)
+                {
+                    SendAnimationEvent(true);
+                }
+            }
+            else if (changed && RunType == AnimationRunType.DontRun)
+            {
+                SendAnimationEvent(false);
+            }
         }
 
         void SendAnimationEvent(bool start)
@@ -83,26 +124,34 @@ namespace Anim3
             }
         }
 
-        public bool IsAnimationEnabled
+        public AnimationRunType RunType
         {
-            get { return (bool)GetValue(IsAnimationEnabledProperty); }
-            set { SetValue(IsAnimationEnabledProperty, value); }
+            get { return (AnimationRunType)GetValue(RunTypeProperty); }
+            set { SetValue(RunTypeProperty, value); }
         }
 
-        public static readonly DependencyProperty IsAnimationEnabledProperty =
-            DependencyProperty.Register("IsAnimationEnabled", typeof(bool), typeof(TextMarquee),
-                new FrameworkPropertyMetadata(true, OnIsAnimationChanged)
-                );
+        public static readonly DependencyProperty RunTypeProperty =
+            DependencyProperty.Register("RunType", typeof(AnimationRunType), typeof(TextMarquee), new PropertyMetadata(AnimationRunType.Auto, OnAnimationRunTypeChanged));
 
-        private static void OnIsAnimationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnAnimationRunTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is TextMarquee marquee)
             {
-                bool start = (bool)e.NewValue;
-                marquee.SendAnimationEvent(start);
+                if (e.NewValue is AnimationRunType runtype)
+                {
+                    marquee.CheckAnimationRuntype(true);
+                }
             }
         }
+
+        public Duration Duration
+        {
+            get { return (Duration)GetValue(DurationProperty); }
+            set { SetValue(DurationProperty, value); }
+        }
+
+        public static readonly DependencyProperty DurationProperty =
+            DependencyProperty.Register("Duration", typeof(Duration), typeof(TextMarquee), new PropertyMetadata(new Duration(TimeSpan.FromSeconds(10))));
     }
-   
 }
 

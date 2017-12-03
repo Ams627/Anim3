@@ -27,9 +27,9 @@ namespace Anim3
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Thickness thickness)
+            if (value is Duration duration)
             {
-                System.Diagnostics.Debug.WriteLine($"Thickness : {thickness.Left},{thickness.Top},{thickness.Right},{thickness.Bottom}");
+                System.Diagnostics.Debug.WriteLine($"duration : {duration.ToString()}");
             }
             return value;
         }

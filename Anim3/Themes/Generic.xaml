@@ -10,12 +10,10 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            Width="{TemplateBinding Width}"
-                            Height="{TemplateBinding Height}"
                             x:Name="border"
                             ClipToBounds="True"
                             >
-                        <Canvas x:Name="canvas" Height="50" Width="{Binding ActualWidth, ElementName=border}">
+                        <Canvas x:Name="canvas" Height="{Binding ActualHeight, ElementName=tb1}" Width="{Binding ActualWidth, ElementName=tb1}" >
                             <TextBlock x:Name="tb1" Padding="0,0,10,0" Text="{TemplateBinding Content}"
                                        FontSize="{TemplateBinding FontSize}" VerticalAlignment="Center" Canvas.Left="0" />
                             <TextBlock x:Name="tb2" Text="{Binding ElementName=tb1, Path=Text}" FontSize="{TemplateBinding FontSize}"
@@ -28,11 +26,11 @@
                             <EventTrigger RoutedEvent="local:TextMarquee.StartAnimation">
                                 <BeginStoryboard Name="Storyboard">
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="X"
+                                        <DoubleAnimation Storyboard.TargetProperty="X" 
                                                          Storyboard.TargetName="translator"
                                                          From="0"
                                                          To="{Binding ElementName=tb1, Path=ActualWidth, Converter={local:MultiplyByMinusOne}}"
-                                                         Duration="00:00:10"
+                                                         Duration="{Binding Duration, RelativeSource={RelativeSource TemplatedParent}}"
                                                          RepeatBehavior="Forever"/>
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetName="tb2" Storyboard.TargetProperty="Opacity">
                                             <DiscreteDoubleKeyFrame KeyTime="00:00:00" Value="1" />
@@ -43,7 +41,6 @@
                             <EventTrigger RoutedEvent="local:TextMarquee.StopAnimation" >
                                 <StopStoryboard BeginStoryboardName="Storyboard"/>
                             </EventTrigger>
-
                         </Border.Triggers>
                     </Border>
                 </ControlTemplate>

@@ -5,40 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Anim3"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-<Window.DataContext>
-    <local:ViewModel/>
-</Window.DataContext>
-    <Grid Margin="0,100,0.4,-0.2">
+        Title="MainWindow" Height="350" Width="525" FontSize="14">
+    <Window.Resources>
+ 
+    </Window.Resources>
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
+    <Grid Margin="0,102,0.4,-2.2">
         <StackPanel>
-            <local:TextMarquee Content="Hello, said the man" Width="160" Height="150" Background="Azure" FontSize="20"/>
-            <Rectangle Height="200" Width="200" Fill="Green"/>
+            <ToggleButton Content="Animation On/Off" Padding="5,5,5,5" IsChecked="{Binding IsAnimated}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Rectangle Fill="Transparent" Height="20"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Top" Width="400">
+                <Button.Content>
+                    <local:TextMarquee
+                        Content="Pigs fly low over London" FontSize="20" Duration="00:00:30" HorizontalAlignment="Center">
+                        <local:TextMarquee.Style>
+                            <Style TargetType="local:TextMarquee">
+                                <Setter Property="RunType" Value="DontRun"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsAnimated}" Value="True">
+                                        <Setter Property="RunType" Value="Run"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:TextMarquee.Style>
+                    </local:TextMarquee>
+                </Button.Content>
+            </Button>
+            <Rectangle Fill="Transparent" Height="20"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Top" Width="400">
+                <Button.Content>
+                    <local:TextMarquee
+                        x:Name="tm" Content="The quick brown fox jumped over the lazy dog" FontSize="20" RunType="Auto" Duration="00:00:30" HorizontalAlignment="Center"/>
+                </Button.Content>
+            </Button>
         </StackPanel>
-
-        <!--<Grid x:Name="panel" Width="100" Background="Beige" ClipToBounds="True" Margin="0,100,0,0">
-            <Canvas x:Name="canvas" Height="50" Width="{Binding ActualWidth, ElementName=panel}">
-                <TextBlock x:Name="tb1" Padding="0,0,10,0"  Text="Hello, World!" FontSize="20" VerticalAlignment="Center" Canvas.Left="0" />
-                <TextBlock Text="{Binding ElementName=tb1, Path=Text}" FontSize="20"
-                           VerticalAlignment="Center" Canvas.Left="{Binding ActualWidth, ElementName=tb1}" />
-                <Canvas.RenderTransform>
-                    <TranslateTransform x:Name="translator"/>
-                </Canvas.RenderTransform>
-            </Canvas>
-            <Grid.Triggers>
-                <EventTrigger RoutedEvent="Loaded">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation
-                                Storyboard.TargetProperty="X"
-                                Storyboard.TargetName="translator"
-                                From="0"
-                                To="{Binding ElementName=tb1, Path=ActualWidth, Converter={local:MultiplyByMinusOne}}"
-                                Duration="00:00:10"
-                                RepeatBehavior="Forever"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Grid.Triggers>
-        </Grid>-->
     </Grid>
 </Window>
